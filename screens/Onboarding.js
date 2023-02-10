@@ -16,8 +16,8 @@ export const Onboarding = () => {
     const [firstName, onChangeFirstName] = useState("")
     const [email, onChangeEmail] = useState("")
 
-    const [isFirstNameValid] = validateName(firstName)
-    const [isEmailValid] = validateEmail(email)
+    const isFirstNameValid = validateName(firstName)
+    const isEmailValid = validateEmail(email)
 
     return (
         <KeyboardAvoidingView
@@ -35,7 +35,7 @@ export const Onboarding = () => {
                 <Text style={styles.headerText}>Little Lemon</Text>
             </View>
 
-            <View>
+            <View style={styles.ctn}>
                 <Text style={styles.regularText}>Let us get to know you</Text>
             </View>
 
@@ -59,7 +59,7 @@ export const Onboarding = () => {
             </View>
 
            <Pressable
-                style={[styles.button, isFirstNameValid ? "" : styles.buttonDisabled]}
+                style={[styles.button, isFirstNameValid && isEmailValid ? "" : styles.buttonDisabled]}
                 disabled={!isEmailValid && !isFirstNameValid}
 
            >
@@ -71,6 +71,8 @@ export const Onboarding = () => {
 }
 
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -78,29 +80,43 @@ const styles = StyleSheet.create({
 
     headerBox: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
+        backgroundColor: '#EDEFEE',
     },
 
     logo: {
-        width: 150,
+        width: 100,
         height: 50,
         resizeMode: 'contain',
     },
 
     headerText: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
     },
 
+    ctn: {
+        marginTop: 30,
+        marginBottom: 60,
+
+    },
+
     regularText: {
-        fontSize: 28,
+        fontSize: 20,
         fontWeight: '500',
+        justifyContent: 'center',
+        alignSelf: 'center',
+
+    },
+
+    inputBox: {
+        marginTop: 20,
     },
 
     input: {
-        borderColor: "#EDEFEE",
-        backgroundColor: "#EDEFEE",
+        borderColor: "#fbdabb",
+        backgroundColor: "#fbdabb",
         alignSelf: "stretch",
         height: 50,
         margin: 18,
@@ -111,17 +127,18 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        flex: 1,
         borderColor: "#f4ce14",
         backgroundColor: "#f4ce14",
         borderRadius: 9,
-        alignSelf: "stretch",
         marginRight: 18,
         padding: 10,
         borderWidth: 1,
+        width: 200,
+        alignSelf: 'flex-end',
     },
 
     buttonDisabled: {
         backgroundColor: "#f1f4f7",
     }
 })
+
