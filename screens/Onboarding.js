@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useContext} from "react";
 import {
     View,
     Image,
@@ -9,15 +9,24 @@ import {
     StyleSheet,
     Platform,
 } from "react-native";
-import { validateName, validateEmail } from "../utils/validate";
+import PagerView from 'react-native-pager-view';
+import { validateName, validateEmail, validatePassword } from "../utils/validate";
+import { AuthContext } from "../context/AuthContext";
 
-export const Onboarding = () => {
+export const Onboarding = ({navigation}) => {
 
     const [firstName, onChangeFirstName] = useState("")
+    const [lastName, onChangeLastName] = useState("")
     const [email, onChangeEmail] = useState("")
+    const [password, onChangePassword] = useState("")
 
     const isFirstNameValid = validateName(firstName)
+    const isLastNameValid = validateName(lastName)
     const isEmailValid = validateEmail(email)
+    const isPasswordValid = validatePassword(password)
+    const pagerViewRef = useRef(PagerView)
+    const { onboard } = useContext(AuthContext)
+
 
     return (
         <KeyboardAvoidingView
@@ -29,8 +38,7 @@ export const Onboarding = () => {
                     source={require('../assets/logo1.png')}
                     accessible={true}
                     accessibilityLabel={'Little Lemon Logo'}
-                    style={styles.logo}
-                />
+                    style={styles.logo} />
 
                 <Text style={styles.headerText}>Little Lemon</Text>
             </View>
@@ -39,33 +47,108 @@ export const Onboarding = () => {
                 <Text style={styles.regularText}>Let us get to know you</Text>
             </View>
 
-            <View style={styles.inputBox}>
-                <Text style={styles.regularText}>First Name</Text>
-                <TextInput
-                    style={styles.input}
-                    value={firstName}
-                    onChangeText={onChangeFirstName}
-                    placeholder={'First Name'}
-                />
+            <PagerView scrollEnabled={false} initialPage={0} style={styles.pageView} ref={pagerViewRef} >
 
-                <Text style={styles.regularText}>Email</Text>
-                <TextInput
-                    style={styles.input}
-                    value={email}
-                    onChangeText={onChangeEmail}
-                    placeholder={'Email'}
-                    keyboardType={'email-address'}
-                />
-            </View>
+                <View style={styles.page} key="1">
+                    <View style={styles.pageBox}>
+                        <Text style={styles.regularText}>First Name</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={firstName}
+                            onChangeText={onChangeFirstName}
+                            placeholder={'first Name'} />
 
-           <Pressable
-                style={[styles.button, isFirstNameValid && isEmailValid ? "" : styles.buttonDisabled]}
-                disabled={!isEmailValid && !isFirstNameValid}
+                        <Text style={styles.regularText}>LastName</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={lastName}
+                            onChangeText={onChangeLastName}
+                            placeholder={'lastName'} />
+                    </View>
 
-           >
-            <Text style={styles.regularText}>Next</Text>
-           </Pressable>
+                    <View style={styles.ellipsis}>
+                        <View style={[styles.dot, styles.dotActive]}></View>
+                        <View style={styles.dot}></View>
+                        <View style={styles.dot}></View>
+                    </View>
 
+                    <Pressable
+                        style={[styles.button, isFirstNameValid && isLastNameValid ? "" : styles.buttonDisabled]}
+                        disabled={!isLastNameValid && !isFirstNameValid}
+                        onPress={() => pagerViewRef.current.setPage(1)} >
+                        <Text style={styles.regularText}>Next</Text>
+                    </Pressable>
+
+                </View>
+
+                <View style={styles.page} key="2">
+                    <View style={styles.pageBox}>
+                        <Text style={styles.regularText}>Email</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={email}
+                            onChangeText={onChangeEmail}
+                            placeholder={'Email'}
+                            keyboardType={'email-address'} />
+
+                        <Text style={styles.regularText}>Password</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={password}
+                            onChangeText={onChangePassword}
+                            placeholder={'Password'}
+                            keyboardType={'visible-password'} />
+                    </View>
+
+                    <View style={styles.ellipsis}>
+                        <View style={styles.dot}></View>
+                        <View style={[styles.dot, styles.dotActive]}></View>
+                        <View style={styles.dot}></View>
+                    </View>
+                    <View style={styles.btnCtn}>
+                        <Pressable
+                            style={styles.smbtn}
+                            onPress={() => pagerViewRef.current.setPage(0)} >
+                                <Text style={styles.regularText}>Back</Text>
+                        </Pressable>
+
+                        <Pressable
+                            style={[styles.smbtn, isEmailValid && isPasswordValid ? "" : styles.buttonDisabled]}
+                            disabled={!isEmailValid && !isPasswordValid}
+                            onPress={() => onboard({firstName, lastName, email, password})} >
+                            <Text style={styles.regularText}>Submit</Text>
+                        </Pressable>
+
+                        <Pressable
+                            style={[styles.smbtn, isEmailValid && isPasswordValid ? "" : styles.buttonDisabled]}
+                            disabled={!isEmailValid && !isPasswordValid}
+                            onPress={() => pagerViewRef.current.setPage(2)} >
+                            <Text style={styles.regularText}>Next</Text>
+                        </Pressable>
+                    </View>
+
+                </View>
+
+                <View style={styles.page} key="3">
+                    <View style={styles.pageBox}>
+                        <Text style={styles.regularText}>Thank you for registering!</Text>
+                    </View>
+
+                    <View style={styles.ellipsis}>
+                        <View style={styles.dot}></View>
+                        <View style={styles.dot}></View>
+                        <View style={[styles.dot, styles.dotActive]}></View>
+                    </View>
+
+                    <Pressable
+                        style={styles.button}
+                        onPress={()=> navigation.navigate('profile')} >
+                        <Text style={styles.regularText}>Profile</Text>
+                    </Pressable>
+
+                </View>
+
+            </PagerView>
         </KeyboardAvoidingView>
     )
 }
@@ -99,7 +182,6 @@ const styles = StyleSheet.create({
     ctn: {
         marginTop: 30,
         marginBottom: 60,
-
     },
 
     regularText: {
@@ -107,11 +189,20 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         justifyContent: 'center',
         alignSelf: 'center',
-
     },
 
-    inputBox: {
-        marginTop: 20,
+    pageView: {
+        flex: 1,
+      },
+
+    page: {
+        justifyContent: 'center',
+    },
+
+    pageBox: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     input: {
@@ -126,19 +217,76 @@ const styles = StyleSheet.create({
         borderRadius: 9,
     },
 
+    btnCtn: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginLeft: 18,
+        marginBottom: 60,
+      },
+
     button: {
         borderColor: "#f4ce14",
         backgroundColor: "#f4ce14",
         borderRadius: 9,
         marginRight: 18,
+        marginLeft: 18,
         padding: 10,
         borderWidth: 1,
         width: 200,
         alignSelf: 'flex-end',
     },
 
+    smbtn: {
+        flex: 1,
+        borderColor: "#f4ce14",
+        backgroundColor: "#f4ce14",
+        borderRadius: 9,
+        alignSelf: "stretch",
+        marginRight: 18,
+        padding: 10,
+        borderWidth: 1,
+    },
+
+    btn: {
+        margin: 10,
+        borderColor: "#f4ce14",
+        backgroundColor: "#f4ce14",
+        borderRadius: 9,
+        width: 200,
+        alignSelf: 'center',
+    },
+
     buttonDisabled: {
         backgroundColor: "#f1f4f7",
-    }
+        marginRight: 18,
+        marginLeft: 18,
+        borderColor: '#333333',
+    },
+
+    ellipsis: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 20,
+      },
+
+    dot: {
+        backgroundColor: "#67788a",
+        width: 22,
+        height: 22,
+        marginHorizontal: 10,
+        borderRadius: 11,
+      },
+
+      dotActive: {
+        backgroundColor: "#f4ce14",
+        width: 22,
+        height: 22,
+        borderRadius: 11,
+      },
 })
 
