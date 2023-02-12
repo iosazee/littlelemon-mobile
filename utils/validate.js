@@ -14,3 +14,12 @@ export const validatePassword = (password) => {
     const regEx = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
     return regEx.test(password)
 }
+
+
+export const validateTelNum = number => {
+    if (isNaN(number)) {
+      return false;
+    } else if (number.length == 10) {
+      return true;
+    }
+  };
