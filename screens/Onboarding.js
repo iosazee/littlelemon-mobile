@@ -25,7 +25,7 @@ export const Onboarding = ({navigation}) => {
     const isEmailValid = validateEmail(email)
     const isPasswordValid = validatePassword(password)
     const pagerViewRef = useRef(PagerView)
-    const { onboard } = useContext(AuthContext)
+    const { onboarded } = useContext(AuthContext)
 
 
     return (
@@ -35,7 +35,7 @@ export const Onboarding = ({navigation}) => {
 
             <View style={styles.headerBox}>
                 <Image
-                    source={require('../assets/logo1.png')}
+                    source={require('../image/logo1.png')}
                     accessible={true}
                     accessibilityLabel={'Little Lemon Logo'}
                     style={styles.logo} />
@@ -115,7 +115,7 @@ export const Onboarding = ({navigation}) => {
                         <Pressable
                             style={[styles.smbtn, isEmailValid && isPasswordValid ? "" : styles.buttonDisabled]}
                             disabled={!isEmailValid && !isPasswordValid}
-                            onPress={() => onboard({firstName, lastName, email, password})} >
+                            onPress={() => onboarded({firstName, lastName, email, password})} >
                             <Text style={styles.regularText}>Submit</Text>
                         </Pressable>
 
