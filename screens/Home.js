@@ -183,8 +183,14 @@ const Home = ({navigation}) => {
             </View>
 
             <View>
-
-                <Text style={styles.orderText}>ORDER FOR DELIVERY!</Text>
+                <View style={styles.orderHeader}>
+                  <Text style={styles.orderText}>ORDER FOR DELIVERY!</Text>
+                  <Image
+                    style={styles.orderIcon}
+                    source={require('../image/deliveryVan.png')}
+                    accessible={true}
+                    accessibilityLabel={'delivery van icon'} />
+                </View>
 
                 <Filters
                     selections={filterSelections}
@@ -275,7 +281,8 @@ const styles = StyleSheet.create({
 
       mainHeader: {
         color: "#f4ce14",
-        fontSize: 54,
+        fontSize: 48,
+        marginTop: -8,
       },
 
       subHeader: {
@@ -291,6 +298,7 @@ const styles = StyleSheet.create({
       heroText: {
         color: '#fff',
         fontSize: 16,
+        width: '70%',
       },
 
       heroImage: {
@@ -306,11 +314,23 @@ const styles = StyleSheet.create({
         shadowOpacity: 0,
       },
 
+      orderHeader: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      },
 
       orderText: {
         fontSize: 18,
         padding: 15,
         fontWeight: 'bold',
+        width: '60%',
+      },
+
+      orderIcon: {
+        height: 40,
+        width: 40,
+        resizeMode: 'contain',
       },
 
       sectionList: {
