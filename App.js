@@ -102,8 +102,8 @@ export default function App({navigation}) {
           <Stack.Navigator>
             { state.isOnboarded ? (
               <>
-               <Stack.Screen name='profile' component={Profile} />
-                <Stack.Screen name='Home' component={Home} />
+               <Stack.Screen name='Home' component={Home} />
+               <Stack.Screen name='Profile' component={Profile} />
               </>
             ) : (
                 <Stack.Screen name='Onboarding'  component={Onboarding} />
