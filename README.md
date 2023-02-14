@@ -44,7 +44,7 @@ The UI elements of the Home Screen include a header featuring the LittleLemon Lo
 </div>
 
 ### Credits
-* [Guidiance fro the Meta React Native Specialization offerred on Coursera:](https://www.coursera.org/specializations/meta-react-native?)
+* [Guidiance from the Meta React Native Specialization offerred on Coursera:](https://www.coursera.org/specializations/meta-react-native?)
 
 
 ### App Wireframe
