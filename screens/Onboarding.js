@@ -115,13 +115,6 @@ export const Onboarding = ({navigation}) => {
                         <Pressable
                             style={[styles.smbtn, isEmailValid && isPasswordValid ? "" : styles.buttonDisabled]}
                             disabled={!isEmailValid && !isPasswordValid}
-                            onPress={() => onboarded({firstName, lastName, email, password})} >
-                            <Text style={styles.regularText}>Submit</Text>
-                        </Pressable>
-
-                        <Pressable
-                            style={[styles.smbtn, isEmailValid && isPasswordValid ? "" : styles.buttonDisabled]}
-                            disabled={!isEmailValid && !isPasswordValid}
                             onPress={() => pagerViewRef.current.setPage(2)} >
                             <Text style={styles.regularText}>Next</Text>
                         </Pressable>
@@ -140,11 +133,15 @@ export const Onboarding = ({navigation}) => {
                         <View style={[styles.dot, styles.dotActive]}></View>
                     </View>
 
-                    <Pressable
-                        style={styles.button}
-                        onPress={()=> navigation.navigate('profile')} >
-                        <Text style={styles.regularText}>Profile</Text>
-                    </Pressable>
+                    <View style={styles.btnCtn}>
+                        <Pressable
+                            style={[styles.smbtn, isEmailValid && isPasswordValid ? "" : styles.buttonDisabled]}
+                            disabled={!isEmailValid && !isPasswordValid}
+                            onPress={() => onboarded({firstName, lastName, email, password})} >
+                            <Text style={styles.regularText}>Submit</Text>
+                        </Pressable>
+
+                    </View>
 
                 </View>
 
